@@ -53,11 +53,11 @@ class Profile(TimeStampUUIDModel):
         return self.user.mobile
 
     @property
-    def get_user_id(self):
+    def get_user_uuid(self):
         return self.user.id
 
     @property
-    def get_user_uuid(self):
+    def get_user_id(self):
         return self.user.pkid
 
     def __str__(self):

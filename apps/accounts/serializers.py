@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     mobile = serializers.SerializerMethodField()
     gender = serializers.CharField(source="profile.gender")
     profile_photo = serializers.ImageField(source="profile.profile_picture")
-    bio = serializers.TimeField(source="profile.about_me")
+    bio = serializers.CharField(source="profile.about_me")
     date_of_birth = serializers.DateField(source="profile.date_of_birth")
     address_line_1 = serializers.CharField(source="profile.address_line_1")
     address_line_2 = serializers.CharField(source="profile.address_line_2")
@@ -21,9 +21,9 @@ class UserSerializer(serializers.ModelSerializer):
     country = serializers.CharField(source="profile.country")
     is_mobile_verified = serializers.BooleanField(source="profile.is_mobile_verified")
     is_customer_verified = serializers.BooleanField(source="profile.is_verified_customer")
-    is_admin = serializers.BooleanField(source="profile.is_admin")
-    is_manager = serializers.BooleanField(source="profile.is_manager")
-    is_customer = serializers.BooleanField(source="profile.is_customer")
+    is_superuser = serializers.SerializerMethodField()
+    is_staff = serializers.SerializerMethodField()
+    is_active = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -47,9 +47,9 @@ class UserSerializer(serializers.ModelSerializer):
             "country", 
             "is_mobile_verified", 
             "is_customer_verified", 
-            "is_admin", 
-            "is_manager", 
-            "is_customer",
+            "is_superuser", 
+            "is_staff"
+            "is_active",
         ]
     
     def get_first_name(self, obj):
@@ -61,7 +61,7 @@ class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         represenatation = super(UserSerializer).to_representation(instance)
         if instance.is_superuser:
-            represenatation["Admin"] = True
+            represenatation["Super Admin"] = True
         return represenatation
 
 
